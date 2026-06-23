@@ -1,19 +1,19 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
-import starsTexture from '../img/stars.jpg';
-import sunTexture from '../img/sun.jpg';
-import mercuryTexture from '../img/mercury.jpg';
-import venusTexture from '../img/venus.jpg';
-import earthTexture from '../img/earth.jpg';
-import marsTexture from '../img/mars.jpg';
-import jupiterTexture from '../img/jupiter.jpg';
-import saturnTexture from '../img/saturn.jpg';
-import saturnRingTexture from '../img/saturn ring.png';
-import uranusTexture from '../img/uranus.jpg';
-import uranusRingTexture from '../img/uranus ring.png';
-import neptuneTexture from '../img/neptune.jpg';
-import plutoTexture from '../img/pluto.jpg';
+const starsTexture = new URL('../img/stars.jpg', import.meta.url).href;
+const sunTexture = new URL('../img/sun.jpg', import.meta.url).href;
+const mercuryTexture = new URL('../img/mercury.jpg', import.meta.url).href;
+const venusTexture = new URL('../img/venus.jpg', import.meta.url).href;
+const earthTexture = new URL('../img/earth.jpg', import.meta.url).href;
+const marsTexture = new URL('../img/mars.jpg', import.meta.url).href;
+const jupiterTexture = new URL('../img/jupiter.jpg', import.meta.url).href;
+const saturnTexture = new URL('../img/saturn.jpg', import.meta.url).href;
+const saturnRingTexture = new URL('../img/saturn ring.png', import.meta.url).href;
+const uranusTexture = new URL('../img/uranus.jpg', import.meta.url).href;
+const uranusRingTexture = new URL('../img/uranus ring.png', import.meta.url).href;
+const neptuneTexture = new URL('../img/neptune.jpg', import.meta.url).href;
+const plutoTexture = new URL('../img/pluto.jpg', import.meta.url).href;
 
 const renderer = new THREE.WebGLRenderer();
 
@@ -103,6 +103,7 @@ const neptune = createPlanete(7, neptuneTexture, 200);
 const pluto = createPlanete(2.8, plutoTexture, 216);
 
 const pointLight = new THREE.PointLight(0xFFFFFF, 2, 300);
+pointLight.decay = 1; // Giúp ánh sáng đi xa hơn trong không gian 3D
 scene.add(pointLight);
 
 function animate() {
