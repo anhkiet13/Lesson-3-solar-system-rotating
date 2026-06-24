@@ -106,8 +106,8 @@ const pointLight = new THREE.PointLight(0xFFFFFF, 2, 300);
 pointLight.decay = 1; // Giúp ánh sáng đi xa hơn trong không gian 3D
 scene.add(pointLight);
 
-function animate() {
-    //Self-rotation
+function animate() { 
+    //Self-rotation -a
     sun.rotateY(0.004);
     mercury.mesh.rotateY(0.004);
     venus.mesh.rotateY(0.002);
