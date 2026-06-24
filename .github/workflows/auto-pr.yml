@@ -16,7 +16,7 @@ jobs:
     - name: 🚀 Tự động khởi tạo Pull Request hướng về nhánh main
       uses: peter-evans/create-pull-request@v6
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.MY_GITHUB_TOKEN }}
         commit-message: "Auto-commit: Kích hoạt kiểm thử hệ thống"
         title: "🚀 [Auto PR] Kiểm thử nhánh ${{ github.ref_name }} trước khi Merge"
         body: |
