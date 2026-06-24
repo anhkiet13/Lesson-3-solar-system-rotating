@@ -1,0 +1,29 @@
+name: Auto Create Pull Request
+
+# Kịch bản này sẽ tự động kích hoạt BẤT KỲ KHI NÀO có ai đó push một nhánh mới lên GitHub
+on:
+  push:
+    branches-ignore:
+    - main # Bỏ qua nhánh main, chỉ áp dụng cho các nhánh tính năng (feature, fix, test...)
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Kéo mã nguồn của nhánh vừa push về
+      uses: actions/checkout@v4
+
+    - name: 🚀 Tự động khởi tạo Pull Request hướng về nhánh main
+      uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }} # Sử dụng token bảo mật mặc định của GitHub
+        commit-message: "Auto-commit: Chuyển giao code từ nhánh tính năng"
+        title: "🚀 [Auto PR] Merge nhánh ${ { github.ref_name } } vào main"
+        body: |
+          Hệ thống tự động nhận diện có nhánh mới được đẩy lên!
+          - **Nhánh nguồn:** `${{ github.ref_name }}`
+          - **Nhánh đích:** `main`
+
+          *Vui lòng chờ hệ thống Jenkins kiểm thử tự động (Unit Test Gate) trước khi tiến hành Merge chính thức.*
+        branch-suffix: short
+        base: main # Đích đến bắt buộc phải là nhánh main
