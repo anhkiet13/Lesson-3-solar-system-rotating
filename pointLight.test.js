@@ -2,19 +2,22 @@ const fs = require('fs');
 const path = require('path');
 
 test('QUÉT BẢO MẬT: Kiểm tra giá trị PointLight không được phép thay đổi', () => {
-    // 1. Chỉ định đường dẫn tới file chứa code Three.js của bro (Giả định là src/js/scripts.js)
-    // Nếu file của bro tên khác hoặc nằm chỗ khác, hãy sửa lại đoạn 'src', 'js', 'scripts.js' này nhé
-    const filePath = path.join(__dirname, 'src', 'js', 'scripts.js');
+    // Tìm đường dẫn file scripts.js chuẩn xác từ thư mục chạy lệnh (process.cwd())
+    const filePath = path.resolve(process.cwd(), 'src', 'js', 'scripts.js');
     
-    // 2. Đọc toàn bộ nội dung file code thành dạng chuỗi văn bản (String)
+    // Đọc nội dung file
     const codeContent = fs.readFileSync(filePath, 'utf8');
 
-    // 3. Định nghĩa chuỗi chuẩn bắt buộc phải có trong code
-    const expectedCode = 'const pointLight = new THREE.PointLight(0xFFFFFF, 2, 300);';
+    // REGEX THẦN THÁNH: Bỏ qua mọi khoảng trắng, dấu tab, xuống dòng. 
+    // Nó chỉ check xem có đúng cụm THREE.PointLight(0xFFFFFF, hai , ba_trăm) hay không.
+    const regexPattern = /THREE\.PointLight\s*\(\s*(0xFFFFFF|0xffffff)\s*,\s*2\s*,\s*300\s*\)/;
 
-    // 4. Kiểm tra xem trong file có chứa chính xác cụm từ này hay không
-    const isValuePreserved = codeContent.includes(expectedCode);
+    const isValuePreserved = regexPattern.test(codeContent);
 
-    // 5. Nếu không tìm thấy (tức là có ai đó đã sửa số 2 hoặc số 300), Jest sẽ bẻ gãy test và báo lỗi
+    // In log ra màn hình console của Jenkins/Jest nếu tạch để dễ debug
+    if (!isValuePreserved) {
+        console.log("❌ CẢNH BÁO: Ai đó đã sửa thông số ánh sáng hoặc cấu trúc PointLight trong file scripts.js rồi!");
+    }
+
     expect(isValuePreserved).toBe(true);
 });
