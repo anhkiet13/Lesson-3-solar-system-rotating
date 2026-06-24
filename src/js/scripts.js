@@ -102,7 +102,7 @@ const uranus = createPlanete(7, uranusTexture, 176, {
 const neptune = createPlanete(7, neptuneTexture, 200);
 const pluto = createPlanete(2.8, plutoTexture, 216);
 
-// test point-light
+// Test point-light
 const pointLight = new THREE.PointLight(0xFFFFFF, 2, 300);
 pointLight.decay = 1; // Giúp ánh sáng đi xa hơn trong không gian 3D
 scene.add(pointLight);
