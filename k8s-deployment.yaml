@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: solar-system-container
-        image: kietha13/solar-system-3d:latest # Thay 'kietha13' bằng Docker Hub Username 
+        image: kietha13/solar-system-3d:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -34,4 +34,4 @@ spec:
   ports:
   - port: 80
     targetPort: 80
-    nodePort: 32080 # Cổng mở cố định trên Worker Node cho HAProxy kết nối
+    nodePort: 32080
