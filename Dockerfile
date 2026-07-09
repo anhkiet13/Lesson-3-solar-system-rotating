@@ -1,15 +1,20 @@
-# Stage 1: Build source code bằng Node.js
+# Stage 1: Build mã nguồn bằng Node.js
 FROM node:20-alpine AS builder
 WORKDIR /app
+
+# Copy package.json để install cache
 COPY package*.json ./
-RUN npm install
+RUN npm install --ignore-scripts
+
+# Copy toàn bộ source code
 COPY . .
-# Build ra thư mục static 'dist'
+
+# Build ra file tĩnh tĩnh bằng Parcel (Có flag --no-cache để không bị đơ)
 RUN npx parcel build ./src/index.html --dist-dir dist --no-cache
 
-# Stage 2: Dùng Nginx siêu nhẹ để phục vụ Web
+# Stage 2: Đóng gói vào Nginx Alpine siêu nhẹ (~20MB)
 FROM nginx:alpine
-# Copy toàn bộ file đã build vào thư mục chứa web của Nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
