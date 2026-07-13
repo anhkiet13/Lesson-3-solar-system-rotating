@@ -4,9 +4,9 @@ WORKDIR /app
 
 # Copy file package trước để tận dụng Docker Cache
 COPY package*.json ./
-#RUN npm install --ignore-scripts
-RUN npm config set registry https://registry.npmmirror.com && \
-    npm install --ignore-scripts --prefer-offline --no-audit
+RUN npm install --ignore-scripts
+# RUN npm config set registry https://registry.npmmirror.com && \
+#     npm install --ignore-scripts --prefer-offline --no-audit
 
 # Copy toàn bộ source code (Đã loại trừ node_modules nhờ .dockerignore)
 COPY . .
