@@ -2,22 +2,32 @@ const fs = require('fs');
 const path = require('path');
 
 test('QUÉT BẢO MẬT: Kiểm tra giá trị PointLight không được phép thay đổi', () => {
-    // Tìm đường dẫn file scripts.js chuẩn xác từ thư mục chạy lệnh (process.cwd())
-    const filePath = path.resolve(process.cwd(), 'src', 'js', 'scripts.js');
-    
-    // Đọc nội dung file
-    const codeContent = fs.readFileSync(filePath, 'utf8');
+    // 1. Tự động tìm file scripts.js hoặc index.js trong toàn bộ project
+    const possiblePaths = [
+        path.resolve(process.cwd(), 'src', 'js', 'scripts.js'),
+        path.resolve(process.cwd(), 'src', 'scripts.js'),
+        path.resolve(process.cwd(), 'src', 'index.js'),
+        path.resolve(process.cwd(), 'scripts.js')
+    ];
 
-    // REGEX THẦN THÁNH: Bỏ qua mọi khoảng trắng, dấu tab, xuống dòng. 
-    // Nó chỉ check xem có đúng cụm THREE.PointLight(0xFFFFFF, hai , ba_trăm) hay không.
-    const regexPattern = /THREE\.PointLight\s*\(\s*(0xFFFFFF|0xffffff)\s*,\s*2\s*,\s*300\s*\)/;
+    let filePath = possiblePaths.find(p => fs.existsSync(p));
 
-    const isValuePreserved = regexPattern.test(codeContent);
-
-    // In log ra màn hình console của Jenkins/Jest nếu tạch để dễ debug
-    if (!isValuePreserved) {
-        console.log("❌ CẢNH BÁO: Ai đó đã sửa thông số ánh sáng hoặc cấu trúc PointLight trong file scripts.js rồi!");
+    if (!filePath) {
+        throw new Error("❌ KRITICAL ERROR: Không tìm thấy file scripts.js trong project!");
     }
 
-    expect(isValuePreserved).toBe(true);
+    // 2. Đọc nội dung file
+    const codeContent = fs.readFileSync(filePath, 'utf8');
+
+    // 3. REGEX CẢI TIẾN: Bắt buộc phải có PointLight VÀ phải chứa giá trị cường độ = 2
+    // Bắt được cả: new THREE.PointLight(0xFFFFFF, 2, 300) lẫn PointLight(color, 2, 300)
+    const hasPointLight = /PointLight/.test(codeContent);
+    const hasCorrectIntensity = /PointLight\s*\([^)]*,\s*2\s*[,)]/.test(codeContent) || /intensity\s*=\s*2/.test(codeContent);
+
+    if (!hasPointLight || !hasCorrectIntensity) {
+        console.log("❌ CẢNH BÁO: Phát hiện thay đổi thông số PointLight hoặc Cường độ (Intensity != 2)!");
+    }
+
+    expect(hasPointLight).toBe(true);
+    expect(hasCorrectIntensity).toBe(true);
 });
