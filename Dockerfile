@@ -1,21 +1,18 @@
-# Stage 1: Build mã nguồn
+# Stage 1: Builder
 FROM node:20-alpine AS builder
 WORKDIR /app
-
-# Copy file package trước để tận dụng Docker Cache
 COPY package*.json ./
-RUN npm install --ignore-scripts
-# RUN npm config set registry https://registry.npmmirror.com && \
-#     npm install --ignore-scripts --prefer-offline --no-audit
-
-# Copy toàn bộ source code (Đã loại trừ node_modules nhờ .dockerignore)
+RUN npm install --no-audit
 COPY . .
-
-# Build ra file tĩnh với flag --no-cache
 RUN npx parcel build ./src/index.html --dist-dir dist --no-cache
 
-# Stage 2: Phục vụ Web bằng Nginx Alpine siêu nhẹ
+# Stage 2: Nginx Runner
 FROM nginx:alpine
+
+# Copy file cấu hình Nginx tối ưu vào container
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy sản phẩm đã build ra thư mục chứa web
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80
