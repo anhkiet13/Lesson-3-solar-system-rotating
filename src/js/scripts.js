@@ -112,7 +112,7 @@ function animate() {
     sun.rotateY(0.004);
     mercury.mesh.rotateY(0.004);
     venus.mesh.rotateY(0.002);
-    earth.mesh.rotateY(0.02);
+    //earth.mesh.rotateY(0.02);
     mars.mesh.rotateY(0.018);
     jupiter.mesh.rotateY(0.04);
     saturn.mesh.rotateY(0.038);
