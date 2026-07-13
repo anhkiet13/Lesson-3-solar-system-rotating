@@ -86,7 +86,7 @@ function createPlanete(size, texture, position, ring) {
 
 const mercury = createPlanete(3.2, mercuryTexture, 28);
 const venus = createPlanete(5.8, venusTexture, 44);
-const earth = createPlanete(6, earthTexture, 62);
+const earth = createPlanete(6, marsTexture, 62);
 const mars = createPlanete(4, marsTexture, 78);
 const jupiter = createPlanete(12, jupiterTexture, 100);
 const saturn = createPlanete(10, saturnTexture, 138, {
@@ -112,7 +112,7 @@ function animate() {
     sun.rotateY(0.004);
     mercury.mesh.rotateY(0.004);
     venus.mesh.rotateY(0.002);
-    //earth.mesh.rotateY(0.02);
+    earth.mesh.rotateY(0.02);
     mars.mesh.rotateY(0.018);
     jupiter.mesh.rotateY(0.04);
     saturn.mesh.rotateY(0.038);
