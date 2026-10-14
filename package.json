@@ -16,5 +16,10 @@
   "devDependencies": {
     "@parcel/transformer-image": "^2.0.0-rc.0",
     "jest": "^30.4.2"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "three": "^0.133.0",
+    "parcel": "^2.15.0"
   }
 }
